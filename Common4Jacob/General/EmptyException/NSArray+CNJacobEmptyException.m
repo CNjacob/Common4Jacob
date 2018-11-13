@@ -29,11 +29,9 @@
 - (id)jacob_initWithObjects:(const id [])objects count:(NSUInteger)count {
     for (int i = 0; i < count; i ++) {
         if (objects == NULL) {
-            NSLog(@"objects 为 NULL, 返回 nil %s",__FUNCTION__);
             return nil;
         }
         if (objects[i] == nil) {
-            NSLog(@"取值时: 取出的元素为 nil, 返回 nil %s",__FUNCTION__);
             return nil;
         }
     }
@@ -46,13 +44,11 @@
 
 - (id)jacob_objectAtIndex:(NSInteger)index {
     if (index >= self.count || index < 0) {
-        NSLog(@"取值时: 索引越界,返回 nil %s",__FUNCTION__);
         return nil;
     }
     
     id obj = [self jacob_objectAtIndex:index];
     if ([obj isKindOfClass:[NSNull class]]) {
-        NSLog(@"取值时: 取出的元素类型为 NSNull 类型,返回 nil %s",__FUNCTION__);
         return nil;
     }
     
@@ -61,13 +57,11 @@
 
 - (id)jacob_singleObjectAtIndex:(NSInteger)index {
     if (index >= self.count || index < 0) {
-        NSLog(@"数组中只有一个元素, 取值时: 索引越界, 返回 nil %s",__FUNCTION__);
         return nil;
     }
     
     id obj = [self jacob_singleObjectAtIndex:index];
     if ([obj isKindOfClass:[NSNull class]]) {
-        NSLog(@"数组中只有一个元素, 取值时: 元素类型为 NSNull 类型, 返回 nil %s",__FUNCTION__);
         return nil;
     }
     
@@ -107,12 +101,10 @@
 
 - (id)jacob_mutableObjectAtIndex:(NSInteger)index {
     if (index >= self.count || index < 0) {
-        NSLog(@"取值时: 索引越界, 返回 nil %s",__FUNCTION__);
         return nil;
     }
     id obj = [self jacob_mutableObjectAtIndex:index];
     if ([obj isKindOfClass:[NSNull class]]) {
-        NSLog(@"取值时: 取出的元素类型为 NSNull, 返回 nil %s",__FUNCTION__);
         return nil;
     }
     return obj;
@@ -124,7 +116,6 @@
         return ;
     }
     
-    NSLog(@"插入值时: 元素类型为 nil, %s",__FUNCTION__);
     [self jacob_addObject:[NSNull null]];
 }
 
@@ -137,24 +128,30 @@
     Class superClass = self.superclass;
     NSString *superClassStr = NSStringFromClass(superClass);
     if (![superClassStr isEqualToString:@"NSMutableArray"]) {
-        NSLog(@"数组中只有一个元素, 并且数组真实类型为NSMutableArray 插入值: 元素类型为 nil, %s",__FUNCTION__);
         [self jacob_singleAddObject:[NSNull null]];
-    } else {
-        NSLog(@"真实类型是NSArray,什么都不做 %s",__FUNCTION__);
     }
 }
 
 - (void)jacob_insertObject:(id)object atIndex:(NSUInteger)index {
+    if (index > self.count || index < 0) {
+        [self jacob_insertObject:object atIndex:self.count];
+        return ;
+    }
+    
     if (object) {
         [self jacob_insertObject:object atIndex:index];
         return ;
     }
     
-    NSLog(@"插入值时: 元素类型为 nil, %s",__FUNCTION__);
     [self jacob_insertObject:[NSNull null] atIndex:index];
 }
 
 - (void)jacob_singleInsertObject:(id)object atIndex:(NSUInteger)index {
+    if (index > self.count || index < 0) {
+        [self jacob_insertObject:object atIndex:self.count];
+        return ;
+    }
+    
     if (object) {
         [self jacob_singleInsertObject:object atIndex:index];
         return ;
@@ -163,16 +160,12 @@
     Class superClass = self.superclass;
     NSString *superClassStr = NSStringFromClass(superClass);
     if (![superClassStr isEqualToString:@"NSMutableArray"]) {
-        NSLog(@"数组中只有一个元素, 并且数组真实类型为NSMutableArray 插入值: 元素类型为 nil, %s",__FUNCTION__);
         [self jacob_singleInsertObject:[NSNull null] atIndex:index];
-    } else {
-        NSLog(@"真实类型是NSArray,什么都不做 %s",__FUNCTION__);
     }
 }
 
 - (void)jacob_removeObject:(id)object {
     if (!object) {
-        NSLog(@"删除值时: 元素类型为 nil, %s",__FUNCTION__);
         return ;
     }
     
@@ -181,7 +174,6 @@
 
 - (void)jacob_singleRemoveObject:(id)object {
     if (!object) {
-        NSLog(@"删除值时: 元素类型为 nil, %s",__FUNCTION__);
         return ;
     }
     
@@ -190,7 +182,6 @@
 
 - (void)jacob_removeObjectAtIndex:(NSInteger)index {
     if (index >= self.count || index < 0) {
-        NSLog(@"取值时: 索引越界, %s",__FUNCTION__);
         return ;
     }
     
@@ -199,7 +190,6 @@
 
 - (void)jacob_singleRemoveObjectAtIndex:(NSInteger)index {
     if (index >= self.count || index < 0) {
-        NSLog(@"取值时: 索引越界, %s",__FUNCTION__);
         return ;
     }
     
