@@ -133,11 +133,7 @@
 }
 
 - (void)jacob_insertObject:(id)object atIndex:(NSUInteger)index {
-    if (index > self.count || index < 0) {
-        [self jacob_insertObject:object atIndex:self.count];
-        return ;
-    }
-    
+    index = (index > self.count || index < 0) ? self.count : index;
     if (object) {
         [self jacob_insertObject:object atIndex:index];
         return ;
@@ -147,11 +143,7 @@
 }
 
 - (void)jacob_singleInsertObject:(id)object atIndex:(NSUInteger)index {
-    if (index > self.count || index < 0) {
-        [self jacob_insertObject:object atIndex:self.count];
-        return ;
-    }
-    
+    index = (index > self.count || index < 0) ? self.count : index;
     if (object) {
         [self jacob_singleInsertObject:object atIndex:index];
         return ;
